@@ -1,3 +1,31 @@
+// --- MULTI SHOT PROMPTING EXPLANATION ---
+// Multi-shot prompting is when you provide the AI model with multiple examples along with your instruction.
+// Here, we give the model two sample recipes (examples) and then ask it to generate a new recipe for the user's input.
+
+function buildMultiShotPrompt(ingredients, cuisine) {
+	// Multi-shot prompt with two sample recipes
+	const example1 = `Example 1:\nIngredients: eggs, bread, milk\nCuisine: French\nRecipe:\nTitle: Classic French Toast\nIngredients List:\n- 2 eggs\n- 2 slices of bread\n- 1/2 cup milk\nInstructions:\n1. Beat the eggs and milk together.\n2. Dip bread slices in the mixture.\n3. Cook on a skillet until golden brown on both sides.\n4. Serve warm.`;
+	const example2 = `Example 2:\nIngredients: tomatoes, pasta, olive oil\nCuisine: Italian\nRecipe:\nTitle: Simple Tomato Pasta\nIngredients List:\n- 2 tomatoes\n- 200g pasta\n- 2 tbsp olive oil\nInstructions:\n1. Boil the pasta until al dente.\n2. Sauté chopped tomatoes in olive oil.\n3. Mix the pasta with the tomato sauce.\n4. Serve hot.`;
+	return `${example1}\n\n${example2}\n\nNow, using only these ingredients: ${ingredients}, and the cuisine: ${cuisine}, generate a creative, step-by-step recipe suitable for home cooks. Do not use any other ingredients. Format the recipe with a title, ingredients list, and clear instructions.`;
+}
+
+// Multi-shot prompt endpoint
+app.post('/api/multi-shot', async (req, res) => {
+	const { ingredients, cuisine } = req.body;
+	if (!ingredients || !cuisine) {
+		return res.status(400).json({ error: 'Missing ingredients or cuisine' });
+	}
+	try {
+		const model = genAI.getGenerativeModel({ model: 'gemini-pro' });
+		// Provide multiple examples (multi-shot)
+		const result = await model.generateContent(buildMultiShotPrompt(ingredients, cuisine));
+		const response = await result.response;
+		const text = response.text();
+		res.json({ recipe: text });
+	} catch (err) {
+		res.status(500).json({ error: err.message });
+	}
+});
 // --- ONE SHOT PROMPTING EXPLANATION ---
 // One-shot prompting is when you provide the AI model with a single example along with your instruction.
 // Here, we give the model one sample recipe (example) and then ask it to generate a new recipe for the user's input.
