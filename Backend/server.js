@@ -1,3 +1,30 @@
+// --- ONE SHOT PROMPTING EXPLANATION ---
+// One-shot prompting is when you provide the AI model with a single example along with your instruction.
+// Here, we give the model one sample recipe (example) and then ask it to generate a new recipe for the user's input.
+
+function buildOneShotPrompt(ingredients, cuisine) {
+	// Example: One-shot prompt with a sample recipe
+	const example = `Example:\nIngredients: eggs, bread, milk\nCuisine: French\nRecipe:\nTitle: Classic French Toast\nIngredients List:\n- 2 eggs\n- 2 slices of bread\n- 1/2 cup milk\nInstructions:\n1. Beat the eggs and milk together.\n2. Dip bread slices in the mixture.\n3. Cook on a skillet until golden brown on both sides.\n4. Serve warm.`;
+	return `${example}\n\nNow, using only these ingredients: ${ingredients}, and the cuisine: ${cuisine}, generate a creative, step-by-step recipe suitable for home cooks. Do not use any other ingredients. Format the recipe with a title, ingredients list, and clear instructions.`;
+}
+
+// One-shot prompt endpoint
+app.post('/api/one-shot', async (req, res) => {
+	const { ingredients, cuisine } = req.body;
+	if (!ingredients || !cuisine) {
+		return res.status(400).json({ error: 'Missing ingredients or cuisine' });
+	}
+	try {
+		const model = genAI.getGenerativeModel({ model: 'gemini-pro' });
+		// Provide a single example (one-shot)
+		const result = await model.generateContent(buildOneShotPrompt(ingredients, cuisine));
+		const response = await result.response;
+		const text = response.text();
+		res.json({ recipe: text });
+	} catch (err) {
+		res.status(500).json({ error: err.message });
+	}
+});
 require('dotenv').config();
 const express = require('express');
 const bodyParser = require('body-parser');
