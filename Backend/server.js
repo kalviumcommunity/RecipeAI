@@ -1,3 +1,37 @@
+// --- DYNAMIC PROMPTING EXPLANATION ---
+// Dynamic prompting is when you build the prompt on-the-fly based on user input or context, customizing instructions or examples.
+// Here, we adjust the prompt based on the user's dietary preference and desired output format.
+
+function buildDynamicPrompt(ingredients, cuisine, dietary, format) {
+	let dietaryText = dietary ? `The recipe must be suitable for a ${dietary} diet.` : '';
+	let formatText = '';
+	if (format === 'json') {
+		formatText = 'Respond in JSON with keys: title, ingredients, instructions.';
+	} else if (format === 'markdown') {
+		formatText = 'Format the recipe in Markdown.';
+	} else {
+		formatText = 'Format the recipe as plain text.';
+	}
+	return `You are an expert chef. Using only these ingredients: ${ingredients}, and the cuisine: ${cuisine}, generate a creative, step-by-step recipe. ${dietaryText} ${formatText}`;
+}
+
+// Dynamic prompt endpoint
+app.post('/api/dynamic-prompt', async (req, res) => {
+	const { ingredients, cuisine, dietary, format } = req.body;
+	if (!ingredients || !cuisine) {
+		return res.status(400).json({ error: 'Missing ingredients or cuisine' });
+	}
+	try {
+		const model = genAI.getGenerativeModel({ model: 'gemini-pro' });
+		// Build the prompt dynamically based on user input
+		const result = await model.generateContent(buildDynamicPrompt(ingredients, cuisine, dietary, format));
+		const response = await result.response;
+		const text = response.text();
+		res.json({ recipe: text });
+	} catch (err) {
+		res.status(500).json({ error: err.message });
+	}
+});
 // --- MULTI SHOT PROMPTING EXPLANATION ---
 // Multi-shot prompting is when you provide the AI model with multiple examples along with your instruction.
 // Here, we give the model two sample recipes (examples) and then ask it to generate a new recipe for the user's input.
