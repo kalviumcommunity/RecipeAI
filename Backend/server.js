@@ -1,3 +1,28 @@
+// --- CHAIN OF THOUGHT PROMPTING EXPLANATION ---
+// Chain of thought prompting encourages the AI to reason step-by-step, making its thinking process explicit.
+// Here, we instruct the model to first plan the recipe, then explain the reasoning, and finally output the recipe.
+
+function buildChainOfThoughtPrompt(ingredients, cuisine) {
+	return `You are an expert chef. Using only these ingredients: ${ingredients}, and the cuisine: ${cuisine}, plan a creative recipe. First, list your reasoning step-by-step: explain how you choose the dish, how you combine the ingredients, and why the steps are ordered as they are. Then, output the final recipe with a title, ingredients list, and instructions.`;
+}
+
+// Chain of thought prompt endpoint
+app.post('/api/chain-of-thought', async (req, res) => {
+	const { ingredients, cuisine } = req.body;
+	if (!ingredients || !cuisine) {
+		return res.status(400).json({ error: 'Missing ingredients or cuisine' });
+	}
+	try {
+		const model = genAI.getGenerativeModel({ model: 'gemini-pro' });
+		// Instruct the model to reason step-by-step (chain of thought)
+		const result = await model.generateContent(buildChainOfThoughtPrompt(ingredients, cuisine));
+		const response = await result.response;
+		const text = response.text();
+		res.json({ recipe: text });
+	} catch (err) {
+		res.status(500).json({ error: err.message });
+	}
+});
 // --- DYNAMIC PROMPTING EXPLANATION ---
 // Dynamic prompting is when you build the prompt on-the-fly based on user input or context, customizing instructions or examples.
 // Here, we adjust the prompt based on the user's dietary preference and desired output format.
