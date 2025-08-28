@@ -1,3 +1,5 @@
+// --- TOKEN LOGGING EXPLANATION ---
+// Tokens are chunks of text (words or parts of words) that language models use to process input and output. Logging token usage helps monitor cost and efficiency.
 // --- CHAIN OF THOUGHT PROMPTING EXPLANATION ---
 // Chain of thought prompting encourages the AI to reason step-by-step, making its thinking process explicit.
 // Here, we instruct the model to first plan the recipe, then explain the reasoning, and finally output the recipe.
@@ -18,6 +20,9 @@ app.post('/api/chain-of-thought', async (req, res) => {
 		const result = await model.generateContent(buildChainOfThoughtPrompt(ingredients, cuisine));
 		const response = await result.response;
 		const text = response.text();
+		if (response.usage && response.usage.totalTokens) {
+			console.log(`[Chain-of-Thought] Tokens used:`, response.usage.totalTokens);
+		}
 		res.json({ recipe: text });
 	} catch (err) {
 		res.status(500).json({ error: err.message });
@@ -52,6 +57,9 @@ app.post('/api/dynamic-prompt', async (req, res) => {
 		const result = await model.generateContent(buildDynamicPrompt(ingredients, cuisine, dietary, format));
 		const response = await result.response;
 		const text = response.text();
+		if (response.usage && response.usage.totalTokens) {
+			console.log(`[Dynamic] Tokens used:`, response.usage.totalTokens);
+		}
 		res.json({ recipe: text });
 	} catch (err) {
 		res.status(500).json({ error: err.message });
@@ -80,6 +88,9 @@ app.post('/api/multi-shot', async (req, res) => {
 		const result = await model.generateContent(buildMultiShotPrompt(ingredients, cuisine));
 		const response = await result.response;
 		const text = response.text();
+		if (response.usage && response.usage.totalTokens) {
+			console.log(`[Multi-Shot] Tokens used:`, response.usage.totalTokens);
+		}
 		res.json({ recipe: text });
 	} catch (err) {
 		res.status(500).json({ error: err.message });
@@ -107,6 +118,9 @@ app.post('/api/one-shot', async (req, res) => {
 		const result = await model.generateContent(buildOneShotPrompt(ingredients, cuisine));
 		const response = await result.response;
 		const text = response.text();
+		if (response.usage && response.usage.totalTokens) {
+			console.log(`[One-Shot] Tokens used:`, response.usage.totalTokens);
+		}
 		res.json({ recipe: text });
 	} catch (err) {
 		res.status(500).json({ error: err.message });
@@ -160,6 +174,9 @@ app.post('/api/zero-shot', async (req, res) => {
 
 		const response = await result.response;
 		const text = response.text();
+		if (response.usage && response.usage.totalTokens) {
+			console.log(`[Zero-Shot] Tokens used:`, response.usage.totalTokens);
+		}
 		res.json({ recipe: text });
 	} catch (err) {
 		res.status(500).json({ error: err.message });
