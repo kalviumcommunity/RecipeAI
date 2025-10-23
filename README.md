@@ -2,6 +2,10 @@
 
 A simple web application that helps you discover recipes based on the ingredients you have. Input your available ingredients and get personalized recipe suggestions with step-by-step cooking instructions.
 
+## Deployed link :
+
+- https://recipeaii.netlify.app/
+
 ## Features
 
 - **Ingredient Input**: Add ingredients you have on hand
