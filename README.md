@@ -1,76 +1,57 @@
-# 🍲 AI Recipe Generator
+# Recipe AI
 
-An AI-powered assistant that generates personalized recipes from user input. This project demonstrates **prompt engineering techniques** (system/user prompts, chain-of-thought, dynamic, and multi-shot prompting) and explores **generation controls** (Top-K, Top-P, Temperature).  
+A simple web application that helps you discover recipes based on the ingredients you have. Input your available ingredients and get personalized recipe suggestions with step-by-step cooking instructions.
 
----
+## Features
 
-## 🚀 Features
-- Generate recipes based on **ingredients, cuisine type, or dietary style**  
-- Uses **system & user prompts** for structured responses  
-- Supports **multi-shot prompting** with sample recipes  
-- **Dynamic prompting** for beginner-friendly or chef-style instructions  
-- Experiments with **Top-K, Top-P, and Temperature** settings  
-- Tracks **token usage** for optimization  
-- Includes **evaluation dataset** for recipe quality testing  
-a
----
+- **Ingredient Input**: Add ingredients you have on hand
+- **Recipe Generation**: Get AI-powered recipe suggestions
+- **Step-by-Step Instructions**: Follow detailed cooking instructions for each recipe
+- **Interactive Interface**: Easy-to-use interface built with React and Tailwind CSS
 
-## 🛠️ Tech Stack
-- **Language Model API** (e.g., OpenAI, Hugging Face)  
-- **Python / JavaScript** (choose based on your setup)  
-- CLI or Web-based interface  
+## Technologies Used
 
----
+- **Frontend**: React, TypeScript, Vite
+- **UI Components**: shadcn-ui, Tailwind CSS
+- **Backend**: Supabase (for recipe generation)
 
-## 📂 Project Structure
-```
-AI-Recipe-Generator/
-│── data/                # Evaluation dataset
-│── notebooks/           # Prompt experiments
-│── src/                 # Main code
-│   ├── generator.py     # Recipe generation logic
-│   ├── evaluation.py    # Testing framework
-│── README.md            # Project documentation
-```
+## Getting Started
 
----
+### Installation
 
-## ⚡ How It Works
-1. User provides input (ingredients, cuisine, or dietary preference).  
-2. System prompt sets the assistant’s persona (creative chef).  
-3. Model generates recipes using **Top-K, Top-P, Temperature** controls.  
-4. **Chain-of-thought prompting** explains reasoning before giving the recipe.  
-5. Output is adjusted based on **dynamic prompting** (beginner vs. expert mode).  
+1. Clone the repository:
+   ```sh
+   git clone <YOUR_GIT_URL>
+   ```
 
----
+2. Navigate to the project directory:
+   ```sh
+   cd RecipeAI
+   ```
 
-## 🧪 Evaluation
-- Small **evaluation dataset** included (`data/recipes.json`).  
-- Tests output for:
-  - **Clarity** (easy to follow steps)  
-  - **Correctness** (valid ingredients & process)  
-  - **Creativity** (variety in results)  
+3. Install dependencies:
+   ```sh
+   npm install
+   ```
 
----
+4. Start the development server:
+   ```sh
+   npm run dev
+   ```
 
-## 📊 Example
-**Input:**  
-`Ingredients: chicken, rice, spinach | Cuisine: Indian | Level: Beginner`
+5. Open your browser and visit `http://localhost:5173`
 
-**Output:**  
-Step 1: Cook rice with a pinch of salt.  
-Step 2: Stir-fry spinach with garlic.  
-Step 3: Grill chicken with spices.  
-Step 4: Combine and serve as a one-pot meal.  
+## Usage
 
----
+1. Enter the ingredients you have available
+2. Click "Generate Recipe" to get recipe suggestions
+3. Select a recipe to view detailed instructions
+4. Follow the step-by-step cooking instructions
 
-## 📖 Future Improvements
-- Add a web UI with search and filters  
-- Store user preferences for personalized suggestions  
-- Expand evaluation dataset with community inputs  
+## Contributing
 
----
+Feel free to submit issues and enhancement requests!
 
-## 📜 License
-This project is licensed under the MIT License.  
+## License
+
+This project is open source and available under the [MIT License](LICENSE).
